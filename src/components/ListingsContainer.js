@@ -1,11 +1,22 @@
-import React from "react";
-// import ListingCard from "./ListingCard";
+import React,{useState} from "react";
+import ListingCard from "./ListingCard";
 
-function ListingsContainer() {
+function ListingsContainer({items,setItems}) {
+
+  function handleDelete(id) {
+    fetch(`http://localhost:6001/listings/${id}`, { method: "DELETE" })
+      .then((response) => {
+        setItems(items.filter((list) => list.id !== id));
+      })
+      .catch((error) => console.error(error));
+  }
+  
   return (
     <main>
       <ul className="cards">
-        {/* use the ListingCard component to display listings */}
+        {items.map((item) => (
+          <ListingCard key={item.id} item={item} handleDelete={handleDelete} />
+        ))}
       </ul>
     </main>
   );
